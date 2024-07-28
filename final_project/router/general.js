@@ -12,14 +12,33 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-    res.send(JSON.stringify(books,null,4));
+
+    let myPromise = new Promise((resolve,reject) => {
+        resolve(JSON.stringify(books,null,4))
+        })
+
+    myPromise.then((books) => {
+        res.send(books);
+    })
+
+
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
    // Retrieve the email parameter from the request URL and send the corresponding friend's details
-   const isbn = req.params.isbn;
-   res.send(books[isbn]);
+   
+      const isbn = req.params.isbn;
+
+   let myPromise = new Promise((resolve,reject) => {
+        resolve(books[isbn])
+        })
+
+    myPromise.then((book) => {
+        res.send(book);
+    })
+   
+
  });
   
 // Get book details based on author
@@ -27,9 +46,15 @@ public_users.get('/author/:author',function (req, res) {
 
     const author = req.params.author;
 
-    var result = Object.values(books).filter(book => book.author == author);
 
-    res.send(result);
+    let myPromise = new Promise((resolve,reject) => {
+        var result = Object.values(books).filter(book => book.author == author);
+        resolve(result)
+        })
+
+    myPromise.then((book) => {
+        res.send(book);
+    })
 
 });
 
@@ -37,9 +62,14 @@ public_users.get('/author/:author',function (req, res) {
 public_users.get('/title/:title',function (req, res) {
     const title = req.params.title;
 
-    var result = Object.values(books).filter(book => book.title == title);
+    let myPromise = new Promise((resolve,reject) => {
+        var result = Object.values(books).filter(book => book.title == title);
+        resolve(result)
+        })
 
-    res.send(result);
+    myPromise.then((book) => {
+        res.send(book);
+    })
 });
 
 //  Get book review
