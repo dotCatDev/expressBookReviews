@@ -75,11 +75,29 @@ regd_users.post("/login", (req,res) => {
         return res.status(208).json({ message: "Invalid Login. Check username and password" });
     }
 });
+regd_users.post("/auth/review/:isbn:review", (req,res) => {
+    
+    const isbn = req.params.isbn;
+    const review = req.params.review;
+    const username = req.session.authorization.username;
+    console.log(req.session.authorization.username);
 
-// Add a book review
-regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    if(Object.hasOwn(books, isbn)){
+        if(!Object.hasOwn(books[isbn]['reviews'], username)){
+        
+            books[isbn]['reviews'][username] = review;
+            return res.status(200).json({message: "Your review has been added to this book!"});
+        }else{
+            
+            books[isbn]['reviews'][username] = review;
+            return res.status(200).json({message: "Your review has been added to this book!"});
+        }
+    }else{
+        return res.status(300).json({message: "No book found"});
+    }
+
+    
+
 });
 
 module.exports.authenticated = regd_users;
