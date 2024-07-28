@@ -75,6 +75,24 @@ regd_users.post("/login", (req,res) => {
         return res.status(208).json({ message: "Invalid Login. Check username and password" });
     }
 });
+
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const isbn = req.params.isbn;
+    const username = req.session.authorization.username;
+
+    if(Object.hasOwn(books, isbn)){
+        if(Object.hasOwn(books[isbn]['reviews'], username)){
+            delete books[isbn]['reviews'][username];
+            return res.status(200).json({message: "Your review has been removed from this book!"});
+        }
+
+    }else{
+        return res.status(300).json({message: "No book found"});
+    }
+
+
+});
+
 regd_users.post("/auth/review/:isbn:review", (req,res) => {
     
     const isbn = req.params.isbn;
