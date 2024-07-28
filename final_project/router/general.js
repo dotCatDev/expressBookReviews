@@ -76,27 +76,10 @@ public_users.get('/title/:title',function (req, res) {
 public_users.get('/review/:isbn',function (req, res) {
     const isbn = req.params.isbn;
 
-    const filtered = Object.fromEntries(
-        Object.entries(books).filter(
-           ([key, val])=> key == isbn
-        )
-     );
+    if(Object.hasOwn(books, isbn)){
+        res.send(books[isbn]['reviews']);
+    }
 
-     var valuechecked = "reviews";
-
-     for (var k in filtered){
-        console.log(k);
-       if(k ==  1)
-       {
-         var entry = filtered[k];
-         for (var a in entry){
-           console.log(entry[a]);
-         }
-     
-       }                           
-     }
-      
-    res.send(filtered);
 });
 
 module.exports.general = public_users;
